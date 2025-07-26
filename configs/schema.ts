@@ -1,7 +1,18 @@
-import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
+// import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
+// export const usersTable = pgTable("users", {
+//     id: integer().primaryKey().generatedAlwaysAsIdentity(),
+//     name: varchar({ length: 255 }).notNull(),
+//     email: varchar({ length: 255 }).notNull().unique(),
+//     credits: integer().default(0)
+// });
+
+
+// configs/schema.ts
+import { pgTable, text, serial, integer } from "drizzle-orm/pg-core";
+
 export const usersTable = pgTable("users", {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    name: varchar({ length: 255 }).notNull(),
-    email: varchar({ length: 255 }).notNull().unique(),
-    credits: integer().default(0)
+  id: serial("id").primaryKey(),
+  name: text("name"),
+  email: text("email").notNull().unique(),
+  credits: integer("credits").default(0),
 });
