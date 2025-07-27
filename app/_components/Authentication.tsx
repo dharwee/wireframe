@@ -1,40 +1,30 @@
-"use client"
-import { auth } from '@/configs/firebaseConfig';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import React from 'react'
+// app/_components/Authentication.tsx
+"use client";
+import React from 'react';
+import { supabase } from '@/lib/supabaseClient'; // ✅ ADD: Import the Supabase client
 
-function Authentication({ children }: any) {
-    const provider = new GoogleAuthProvider();
+// ✅ FIX: Use proper TypeScript type for children
+function Authentication({ children }: { children: React.ReactNode }) {
 
-    const onButtonPress = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential: any = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user);
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-    }
+    // ✅ REWRITE: The sign-in function to use Supabase
+    const onGoogleSignIn = async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+        });
+
+        if (error) {
+            console.error('Error signing in with Google:', error.message);
+        }
+    };
+
     return (
         <div>
-            <div onClick={onButtonPress}>
+            {/* The onClick now calls the Supabase function */}
+            <div onClick={onGoogleSignIn} style={{ cursor: 'pointer' }}>
                 {children}
             </div>
         </div>
-    )
+    );
 }
 
-export default Authentication
+export default Authentication;
