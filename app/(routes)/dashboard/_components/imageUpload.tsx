@@ -20,11 +20,19 @@ import { supabase } from "@/lib/supabaseClient";
 function ImageUpload() {
     const { user } = useAuth();
     const AiModelList = [
-        { name: 'Gemini Google', icon: '/google.png' },
-        { name: 'DeepSeek', icon: '/deepseek.png' },
-        { name: 'Llama 3', icon: '/meta.png' }
+        {
+            name: 'Gemini Google',
+            icon: '/google.png'
+        },
+        {
+            name: 'Llama 3 (Meta)',
+            icon: '/meta.png' // Assumes you've added meta.png to your /public folder
+        },
+        {
+            name: 'DeepSeek',
+            icon: '/deepseek.png'
+        }
     ];
-
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -151,7 +159,7 @@ function ImageUpload() {
                             {AiModelList.map((model, index) => (
                                 <SelectItem value={model.name} key={index}>
                                     <div className="flex items-center gap-1">
-                                        <Image src={model.icon} alt={model.name} width={25} height={35} className="inline-block mr-2" />
+                                        <Image src={model.icon} alt={model.name} width={25} height={25} className="inline-block mr-2" />
                                         <h2>{model.name}</h2>
                                     </div>
                                 </SelectItem>
