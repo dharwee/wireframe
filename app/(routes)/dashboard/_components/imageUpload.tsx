@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CloudUpload, WandSparkles, X } from "lucide-react";
 import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
+import axios from 'axios';
 import { useRouter } from "next/navigation";
 import {
     Select,
@@ -41,7 +42,7 @@ function ImageUpload() {
             setError(null);
         }
     };
-    
+
     const clearSelection = () => {
         setPreviewUrl(null);
         setSelectedFile(null);
@@ -52,59 +53,72 @@ function ImageUpload() {
 
     // ✅ FIX: Renamed function to reflect its full purpose
     const handleUploadAndSave = async () => {
-        // ✅ ADD: Validate all form fields
-        if (!selectedFile || !aiModel || !description) {
-            setError("Please select an image and fill out all fields.");
-            return;
-        }
-        if (!user) {
-            setError("You must be logged in to create a project.");
-            return;
-        }
+    if (!selectedFile || !aiModel || !description) {
+        setError("Please select an image and fill out all fields.");
+        return;
+    }
+    if (!user) {
+        setError("You must be logged in to create a project.");
+        return;
+    }
 
-        setIsUploading(true);
-        setError(null);
+    setIsUploading(true);
+    setError(null);
 
-        // 1. Upload Image to Storage
-        const filePath = `${user.id}/${Date.now()}-${selectedFile.name}`;
-        const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('wireframe') // Make sure this matches your bucket name
-            .upload(filePath, selectedFile);
+    // 1. Upload Image
+    const sanitizedFileName = selectedFile.name.replace(/\s+/g, '_');
+    const filePath = `${user.id}/${Date.now()}-${sanitizedFileName}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('wireframe')
+        .upload(filePath, selectedFile);
 
-        if (uploadError) {
-            setIsUploading(false);
-            setError(`Image upload failed: ${uploadError.message}`);
-            return;
-        }
-
-        // 2. Get Public URL of the uploaded file
-        const { data: { publicUrl } } = supabase.storage
-            .from('wireframe')
-            .getPublicUrl(filePath);
-
-        // ✅ ADD: 3. Insert all data into the 'projects' database table
-        const { data:dbData, error: dbError } = await supabase
-            .from('projects')
-            .insert({
-                user_id: user.id,
-                image_url: publicUrl,
-                description: description,
-                ai_model: aiModel
-            })
-            .select()
-            .single()
-        
+    if (uploadError) {
         setIsUploading(false);
+        setError(`Image upload failed: ${uploadError.message}`);
+        return;
+    }
 
-        if (dbError) {
-            setError(`Failed to save project to database: ${dbError.message}`);
-        } else if(dbData) {
-            alert("Image uploaded successfully! Generating code...");
-            clearSelection(); // Clear the form on success
-            router.push(`/view-code/${user.id}`); // Redirect to the view code page
-        }
-    };
+    // 2. Get Public URL
+    const { data: { publicUrl } } = supabase.storage
+        .from('wireframe')
+        .getPublicUrl(filePath);
 
+    // ✅ FIX: The critical part starts here
+    // 3. Insert project data AND get the new record back
+    const { data: newProject, error: dbError } = await supabase
+        .from('projects')
+        .insert({
+            user_id: user.id, // This is the User's ID
+            image_url: publicUrl,
+            description: description,
+            ai_model: aiModel
+        })
+        .select()   // Tell Supabase to return the row we just created
+        .single();  // We expect only one row back
+
+    setIsUploading(false);
+
+    if (dbError) {
+        setError(`Failed to save project to database: ${dbError.message}`);
+    } else if (newProject) { // Check if we got the new project data
+        alert("Project created successfully! Generating code...");
+
+        // ✅ FIX: Redirect using the NEW project's ID (newProject.id)
+        router.push(`/view-code/${newProject.id}`);
+    }
+
+        if (newProject) {
+        // ✅ FIX: Trigger the AI generation API in the background
+        axios.post('/api/generate', { projectId: newProject.id });
+
+        alert("Project created! Redirecting to generate code...");
+        
+        // Redirect immediately, don't wait for the AI
+        router.push(`/view-code/${newProject.id}`);
+    }
+
+};
+  
     return (
         <div className="mt-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -145,11 +159,11 @@ function ImageUpload() {
                         </SelectContent>
                     </Select>
                     <h2 className="font-bold text-lg mt-7">Enter Description about your webpage</h2>
-                    <Textarea 
-                        className="mt-3 h-[200px]" 
-                        placeholder="Write about your webpage" 
+                    <Textarea
+                        className="mt-3 h-[200px]"
+                        placeholder="Write about your webpage"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)} 
+                        onChange={(e) => setDescription(e.target.value)}
                     />
                     {error && <p className="text-red-500 mt-2">{error}</p>}
                 </div>
