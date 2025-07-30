@@ -19,7 +19,7 @@ export default function ProtectedLayout({
     if (!loading) {
       // If there is no user, redirect to the login page
       if (!user) {
-        router.push('/login'); // 👈 Change '/login' to your actual login page URL
+        router.push('/'); // 👈 Change '/login' to your actual login page URL
       }
     }
   }, [user, loading, router]);
@@ -37,6 +37,7 @@ export default function ProtectedLayout({
     </DashboardProvider>
     </>;
   }
+  
 
   // If no user, return null while redirecting
   return null;

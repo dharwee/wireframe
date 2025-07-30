@@ -1,106 +1,101 @@
-"use client";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, BookOpen, Code, Gem, GitBranch } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import Authentication from "./_components/Authentication";
-import ProfileAvatar from "./_components/ProfileAvatar";
-import { useAuth } from "@/context/AuthContext"; 
-export default function Home() {
+import Navbar from "./_components/Navbar";
+import GetStartedButton from "./_components/GetStartedButton";
 
-  const { user } = useAuth();
+export default function Home() {
+  const features = [
+    {
+      icon: <BookOpen className="h-8 w-8 text-blue-500" />,
+      title: "25+ templates",
+      description: "Responsive, and mobile-first project on the web"
+    },
+    {
+      icon: <GitBranch className="h-8 w-8 text-green-500" />,
+      title: "Customizable",
+      description: "Components are easily customized and extendable"
+    },
+    {
+      icon: <Code className="h-8 w-8 text-purple-500" />,
+      title: "Free to Use",
+      description: "Every component and plugin is well documented"
+    },
+    {
+      icon: <Gem className="h-8 w-8 text-red-500" />,
+      title: "24/7 Support",
+      description: "Contact us 24 hours a day, 7 days a week"
+    },
+  ];
 
   return (
-    <div>
-      <header className="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-neutral-800 dark:border-neutral-700">
-        <nav
-          className="relative p-4 max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
-          aria-label="Global"
+    <div className="bg-white text-gray-800 min-h-screen">
+      <Navbar />
+
+      <main className="container mx-auto px-6 pt-24 pb-16 md:pt-32 md:pb-20 text-center">
+        <Link 
+            href="#" 
+            className="inline-flex items-center gap-2 border border-green-300 rounded-full px-3 py-1 text-sm mb-6 bg-green-50 hover:bg-green-100 transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <Image
-                src={"/logo.svg"}
-                alt="logo"
-                width={100}
-                height={100}
-                className="w-full h-full"
-              />
-            </div>
-          </div>
-          <div
-            id="navbar-collapse-with-animation"
-            className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end sm:ps-7">
-              {/* ✅ FIX: The condition is now simpler */}
-              {!user?.email ? (
-                <Authentication>
-                  <div className="flex items-center gap-x-2 font-medium text-gray-500 hover:text-blue-600 sm:border-s sm:border-gray-300 py-2 sm:py-0 sm:ms-4 sm:my-6 sm:ps-6 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-blue-500">
-                    <svg
-                      className="flex-shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
-                    </svg>
-                    Get Started
-                  </div>
-                </Authentication>
-              ) : (
-                <ProfileAvatar />
-              )}
-            </div>
-          </div>
-        </nav>
-      </header>
+          From Idea to Code in Seconds →
+        </Link>
+        
+        <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+          Convert Wireframe To
+          <br />
+          <span className="bg-green-200 text-green-800 rounded-full px-4 mt-2 inline-block">Code</span>
+        </h1>
 
-      {/* ... the rest of your page content remains the same ... */}
-       <div className="relative overflow-hidden before:absolute before:top-0 before:start-1/2 before:bg-[url('https://preline.co/assets/svg/examples/polygon-bg-element.svg')] dark:before:bg-[url('https://preline.co/assets/svg/examples-dark/polygon-bg-element.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:size-full before:-z-[1] before:transform before:-translate-x-1/2">
-        <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
+        <p className="max-w-2xl mx-auto mt-6 text-gray-600 text-lg">
+          Revolutionize your content creation with our AI-powered app, delivering engaging and high-quality apps in seconds.
+        </p>
 
-          <div className="flex justify-center">
-            <a className="inline-flex items-center gap-x-2 bg-white border border-gray-200 text-sm text-gray-800 p-1 ps-3 rounded-full transition hover:border-gray-300 dark:bg-neutral-800 dark:border-neutral-700 dark:hover:border-neutral-600 dark:text-neutral-200"
-              href="tubeguruji.com" target="_blank">
-              TUBEGURUJI Membership - Join Now
-              <span className="py-1.5 px-2.5 inline-flex justify-center items-center gap-x-2 rounded-full bg-gray-200 font-semibold text-sm text-gray-600 dark:bg-neutral-700 dark:text-neutral-400">
-                <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-              </span>
-            </a>
-          </div>
-
-
-
-          <div className="mt-5 max-w-2xl text-center mx-auto">
-            <h1 className="block font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-neutral-200">
-              Build Something
-              <span className="bg-clip-text bg-gradient-to-tl from-blue-600 to-violet-600 text-transparent"> With NextJs</span>
-            </h1>
-          </div>
-
-
-          <div className="mt-5 max-w-3xl text-center mx-auto">
-            <p className="text-lg text-gray-600 dark:text-neutral-400">
-              Revolutionize your content creation with our AI-powered app, delivering engaging and high-quality apps in seconds.</p>
-          </div>
-
-
-          <div className="mt-8 gap-3 flex justify-center">
-            <a className="inline-flex justify-center items-center 
-      gap-x-3 text-center bg-gradient-to-tl from-blue-600
-       to-violet-600 hover:from-violet-600 hover:to-blue-600 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800"
-              href="/dashboard">
-              Get started
-              <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-            </a>
-
-          </div>
-
-
-
+        <div className="mt-8 flex justify-center">
+            <GetStartedButton />
         </div>
-      </div>
+      </main>
+
+      <section className="container mx-auto px-6 pb-24 flex justify-center">
+        <Image 
+            src="/Wireframetocode.png" 
+            alt="Diagram showing a wireframe converting to code" 
+            width={800} 
+            height={400} 
+            className="border rounded-lg bg-white p-4 shadow-sm"
+        />
+      </section>
+
+      <section className="relative w-full py-12">
+        <div className="w-[95%] mx-auto py-8 rounded-2xl shadow-lg border border-white/20 bg-white/30 backdrop-blur-md">
+            <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+                <ul className="flex items-center justify-center md:justify-start animate-marquee">
+                    {features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-4 mx-8 flex-shrink-0" style={{width: '300px'}}>
+                        <div className="mt-1">{feature.icon}</div>
+                        <div>
+                          <h3 className="font-semibold text-lg">{feature.title}</h3>
+                          <p className="text-sm text-gray-700">{feature.description}</p>
+                          <Link href="#" className="text-sm font-semibold text-blue-600 mt-1 inline-block">Learn more &rarr;</Link>
+                        </div>
+                      </li>
+                    ))}
+                    {features.map((feature, index) => (
+                      <li key={`duplicate-${index}`} className="flex items-start gap-4 mx-8 flex-shrink-0" style={{width: '300px'}}>
+                        <div className="mt-1">{feature.icon}</div>
+                        <div>
+                          <h3 className="font-semibold text-lg">{feature.title}</h3>
+                          <p className="text-sm text-gray-700">{feature.description}</p>
+                          <Link href="#" className="text-sm font-semibold text-blue-600 mt-1 inline-block">Learn more &rarr;</Link>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+      </section>
+
+      <div className="h-24"></div> 
     </div>
   );
 }

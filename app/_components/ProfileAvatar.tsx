@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import React from 'react';
 import {
     Popover,
@@ -6,25 +7,39 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/context/AuthContext'; // ✅ USE: The correct hook from our Supabase context
+import { useAuth } from '@/context/AuthContext';
+import Image from 'next/image';
 
 function ProfileAvatar() {
-    // ✅ FIX: Use the useAuth hook and destructure user and logout
+    // This gets the user and the CORRECT logout function from our auth context
     const { user, logout } = useAuth();
 
-    // The Supabase user object from Google OAuth has the avatar URL here.
     const avatarUrl = user?.user_metadata?.avatar_url;
+    const userEmail = user?.email || '';
+    const initial = userEmail.charAt(0).toUpperCase();
 
     return (
         <div>
             <Popover>
                 <PopoverTrigger>
-                    {/* ✅ FIX: Update the image source to use Supabase's user metadata */}
-                    {avatarUrl && <img src={avatarUrl} alt='profile' className='w-[35px] h-[35px] rounded-full' />}
+                    {avatarUrl ? (
+                        <Image 
+                            src={avatarUrl} 
+                            alt='profile' 
+                            width={40} 
+                            height={40} 
+                            className='rounded-full' 
+                        />
+                    ) : (
+                        <div className='w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold'>
+                            {initial}
+                        </div>
+                    )}
                 </PopoverTrigger>
-                <PopoverContent className='w-[100px] max-w-sm'>
-                    {/* ✅ FIX: The logout button now calls the logout function from our context */}
-                    <Button variant={'ghost'} onClick={logout} className=''>
+                <PopoverContent className='w-40'>
+                    <p className="text-sm text-gray-500 truncate mb-2">{userEmail}</p>
+                    {/* This button now correctly calls the logout function from the context */}
+                    <Button variant={'ghost'} onClick={logout} className='w-full justify-start'>
                         Logout
                     </Button>
                 </PopoverContent>

@@ -1,38 +1,33 @@
-// src/context/AuthContext.tsx
-"use client";
+'use client';
+
 import {
   createContext,
   useContext,
   useEffect,
   useState,
-  ReactNode, // 👈 Import ReactNode for typing children
+  ReactNode,
 } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { useRouter } from 'next/router';
-import type { User, AuthError } from '@supabase/supabase-js'; // 👈 Import Supabase types
+import { useRouter } from 'next/navigation';
+import type { User, AuthError } from '@supabase/supabase-js';
 
-// Define the shape of the context value
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signup: (email: string, password: string) => Promise<{ error: AuthError | null }>;
-  login: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
-// Create the context with a default undefined value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define the props for the provider component
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthContextProvider = ({ children }: AuthProviderProps) => {
-  // Type the user state
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  
+  const router = useRouter(); 
 
   useEffect(() => {
     const getSession = async () => {
@@ -53,46 +48,38 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     };
   }, []);
 
-  // Type the function parameters
-  const signup = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) console.error('Error signing up:', error.message);
-    return { error };
-  };
-
-  const login = async (email: string, password: string) => {
-    const router = useRouter();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      alert(error.message);
-    } else {
-      router.push('/');
-    }
-    return { error };
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: `${window.location.origin}/auth/callback`,
+        },
+    });
   };
 
   const logout = async () => {
-    const router = useRouter();
     await supabase.auth.signOut();
-    router.push('/login');
+    // ✅ This is the corrected line that redirects to the homepage.
+    router.push('/');
+    setUser(null);
+    setLoading(false);  
+    
   };
 
   const value: AuthContextType = {
     user,
     loading,
-    signup,
-    login,
+    signInWithGoogle,
     logout,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook with proper typing
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {

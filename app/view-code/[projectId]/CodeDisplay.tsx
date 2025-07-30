@@ -28,12 +28,12 @@ export default function CodeDisplay({ generatedCode }: { generatedCode: string |
             <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-2 right-2"
+                className="absolute top-2 right-2 text-white"
                 onClick={handleCopy}
             >
                 {copied ? <Check className="h-4 w-4" /> : <Clipboard className="h-4 w-4" />}
             </Button>
-            <pre className="p-4 bg-gray-900 text-white rounded-md overflow-x-auto">
+            <pre className="p-4 bg-gray-900 text-white rounded-md overflow-x-auto h-full">
                 <code>
                     {generatedCode}
                 </code>
