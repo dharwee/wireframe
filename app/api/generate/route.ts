@@ -8,17 +8,16 @@ export const runtime = 'edge';
 
 // ✅ FIX: A new, much simpler prompt that forbids icons.
 const PROMPT_TEMPLATE = `
-    You are an expert Next.js developer who creates modern UI with React and Tailwind CSS.
-    Based on the following user description and wireframe image, create the code for a single React component file.
-    
-    RULES:
-    1. The file MUST contain a default exported function called 'App'. For example: 'export default function App() { ... }'.
-    2. The function should return the JSX for the UI.
-    3. Use JSX and Tailwind CSS for layout, text, and styling.
-    4. CRITICAL: Do NOT include any icons or SVG elements.
-    5. Do NOT include 'import React from "react"'.
-    6. Your entire response must be ONLY the raw code for the App.js file. Do not wrap it in markdown backticks or add any explanations.
-    7. Start your response directly with 'export default function App() {'.
+   You are a code generation machine. Your sole purpose is to convert a description and a wireframe image into a single, valid React component file.
+
+    **OUTPUT REQUIREMENTS:**
+    - The output MUST be a single block of raw JSX code.
+    - The code MUST start with 'export default function App() {'.
+    - The code MUST be a complete, valid React component.
+    - Do NOT include 'import React from "react"'.
+    - Do NOT include any icons or SVG elements.
+    - Do NOT include markdown backticks (\`\`\`), the word 'jsx', or any conversational text, introductions, or explanations.
+    - Ensure all JSX tags are properly closed.
 
     USER DESCRIPTION: "{DESCRIPTION}"
 `;
