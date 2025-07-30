@@ -4,8 +4,13 @@ import { notFound } from 'next/navigation';
 import React from 'react';
 import ProjectView from './ProjectView';
 
+interface ProjectPageProps {
+  params: {
+    projectId: string;
+  };
+}
 
-export default async function ProjectPage({ params }: { params: { projectId: string } }) {
+export default async function ProjectPage({ params }: ProjectPageProps) {
     const supabase = createServerComponentClient({ cookies });
 
     const { data: { user } } = await supabase.auth.getUser();
