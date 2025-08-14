@@ -27,7 +27,8 @@ export default function CodePreview({ generatedCode }: { generatedCode: string |
                     dependencies: {
                         "react": "latest",
                         "react-dom": "latest",
-                        "tailwindcss": "^3.4.1"
+                        "tailwindcss": "^3.4.1",
+                        "nextjs": "latest",
                     },
                     entry: "/index.js",
                 }}

@@ -8,19 +8,66 @@ export const runtime = 'edge';
 
 // ✅ FIX: A new, much simpler prompt that forbids icons.
 const PROMPT_TEMPLATE = `
-   You are a code generation machine. Your sole purpose is to convert a description and a wireframe image into a single, valid React component file.
+You are a precise React component generator. Convert the provided wireframe image and description into a single, production-ready React component.
 
-    **OUTPUT REQUIREMENTS:**
-    - The output MUST be a single block of raw JSX code.
-    - The code MUST start with 'export default function App() {'.
-    - The code MUST be a complete, valid React component.
-    - Do NOT include 'import React from "react"'.
-    - Do NOT include any icons or SVG elements.
-    - Do NOT include markdown backticks (\`\`\`), the word 'jsx', or any conversational text, introductions, or explanations.
-    - Ensure all JSX tags are properly closed.
+**ANALYSIS INSTRUCTIONS:**
+1. Carefully examine the wireframe image to understand:
+   - Layout structure and positioning
+   - Component hierarchy and nesting
+   - Spacing, alignment, and proportions
+   - Interactive elements (buttons, forms, etc.)
+   - Content areas and text placement
 
-    USER DESCRIPTION: "{DESCRIPTION}"
-`;
+2. Use the user description to understand:
+   - Functionality requirements
+   - Specific styling preferences
+   - Interactive behavior needed
+
+**STYLING REQUIREMENTS:**
+- Use Tailwind CSS classes exclusively for all styling
+- Match the wireframe layout precisely using Flexbox/Grid
+- Use semantic HTML elements (header, nav, main, section, article, etc.)
+- Apply proper spacing with Tailwind spacing classes (p-, m-, gap-)
+- Use appropriate Tailwind typography classes (text-sm, text-lg, font-bold, etc.)
+- Ensure responsive design with Tailwind responsive prefixes (sm:, md:, lg:)
+- Use Tailwind colors for backgrounds, borders, and text
+- Add subtle shadows, borders, and hover effects where appropriate
+
+**COMPONENT STRUCTURE:**
+- Create a complete functional component with React hooks if needed
+- Use proper component composition for complex layouts
+- Implement any form inputs, buttons, or interactive elements shown in wireframe
+- Add realistic placeholder content that matches the wireframe context
+- Include proper accessibility attributes (alt text, aria-labels, etc.)
+
+**CODE QUALITY:**
+- Write clean, readable code with proper indentation
+- Use descriptive variable and function names
+- Add comments only for complex logic
+- Ensure all JSX elements are properly closed
+- Handle any state management needed for interactive elements
+
+**OUTPUT REQUIREMENTS:**
+- Return ONLY the raw JSX code, nothing else
+- Start with: export default function App() {
+- Do NOT include import statements
+- Do NOT include markdown backticks, explanations, or conversational text
+- Do NOT use placeholder comments like "// Add more components here"
+- The component must be complete and render-ready
+- Include realistic content, not just "Lorem ipsum" or "Content here"
+
+**FORBIDDEN ELEMENTS:**
+- No import React statements
+- No external icons or SVG imports
+- No console.log statements
+- No TODO comments
+- No explanation text outside the code
+
+USER DESCRIPTION: "{DESCRIPTION}"
+
+Generate the complete React component now:`;
+
+// module.exports = PROMPT_TEMPLATE;
 
 export async function POST(request: NextRequest) {
     const { projectId } = await request.json();

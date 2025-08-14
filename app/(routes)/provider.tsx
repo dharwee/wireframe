@@ -1,12 +1,12 @@
 "use client"
 import React, { useEffect } from 'react'
-import { useAuth } from '@/context/AuthContext'; // ✅ FIX: Import the correct Supabase auth hook
+import { useAuth } from '@/context/AuthContext'; 
 import { useRouter } from 'next/navigation';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import axios from "axios";
 import AppHeader from '../_components/AppHeader';
 import { AppSidebar } from '../_components/AppSidebar';
-import { User } from '@supabase/supabase-js'; // ✅ ADD: Import Supabase User type for clarity
+import { User } from '@supabase/supabase-js'; 
 
 function DashboardProvider({
     children,

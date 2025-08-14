@@ -11,7 +11,7 @@ const nextConfig = {
         port: '',
         pathname: '/storage/v1/object/public/**',
       },
-      // ✅ ADD THIS NEW BLOCK for Google profile pictures
+      
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
