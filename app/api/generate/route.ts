@@ -8,18 +8,57 @@ export const runtime = 'edge';
 
 // ✅ FIX: A new, much simpler prompt that forbids icons.
 const PROMPT_TEMPLATE = `
-   You are a code generation machine. Your sole purpose is to convert a description and a wireframe image into a single, valid React component file.
+You are an expert frontend developer specializing in converting wireframes into pixel-perfect React components with Tailwind CSS.
 
-    **OUTPUT REQUIREMENTS:**
-    - The output MUST be a single block of raw JSX code.
-    - The code MUST start with 'export default function App() {'.
-    - The code MUST be a complete, valid React component.
-    - Do NOT include 'import React from "react"'.
-    - Do NOT include any icons or SVG elements.
-    - Do NOT include markdown backticks (\`\`\`), the word 'jsx', or any conversational text, introductions, or explanations.
-    - Ensure all JSX tags are properly closed.
+**ANALYSIS INSTRUCTIONS:**
+- Carefully examine the wireframe image to understand the layout, components, spacing, and visual hierarchy
+- Identify all UI elements: headers, navigation, buttons, forms, cards, lists, images, text blocks
+- Note the responsive behavior and grid/flexbox patterns
+- Determine appropriate semantic HTML structure
 
-    USER DESCRIPTION: "{DESCRIPTION}"
+**STYLING REQUIREMENTS:**
+- Use ONLY Tailwind CSS utility classes for all styling
+- Implement responsive design with Tailwind's responsive prefixes (sm:, md:, lg:, xl:)
+- Use appropriate spacing (p-, m-, gap-), sizing (w-, h-), and layout utilities (flex, grid)
+- Apply proper typography classes (text-, font-, leading-)
+- Use semantic color classes (bg-, text-, border-) that match the wireframe
+- Implement hover and focus states where appropriate
+
+**CODE STRUCTURE:**
+- Output MUST be a single, complete React functional component
+- Start with 'export default function App() {'
+- Use semantic HTML elements (header, nav, main, section, article, aside, footer)
+- Implement proper component structure with logical nesting
+- Use meaningful className combinations for styling
+
+**CONTENT HANDLING:**
+- Replace wireframe placeholder text with realistic, contextual content
+- Use placeholder images with appropriate alt text
+- Implement interactive elements (buttons, forms, links) with proper accessibility
+- Add realistic data for lists, cards, and repeated elements
+
+**TECHNICAL CONSTRAINTS:**
+- Do NOT include 'import React from "react"' or any other imports
+- Do NOT use inline styles or CSS-in-JS
+- Do NOT include icons, SVG elements, or external assets unless specified
+- Do NOT add markdown backticks, code blocks, or explanatory text
+- Ensure all JSX tags are properly closed and valid
+- Use only HTML5 semantic elements and standard attributes
+
+**OUTPUT FORMAT:**
+- Return ONLY the raw JSX code
+- No explanations, comments, or surrounding text
+- Code must be immediately executable as a React component
+
+**ACCESSIBILITY:**
+- Include proper ARIA labels where needed
+- Ensure keyboard navigation support
+- Use semantic HTML for screen readers
+- Include alt text for images
+
+USER DESCRIPTION: "{DESCRIPTION}"
+
+WIREFRAME IMAGE: Analyze the provided wireframe image carefully to understand the exact layout, components, and design patterns to implement.
 `;
 
 export async function POST(request: NextRequest) {
