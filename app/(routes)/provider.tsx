@@ -6,18 +6,18 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import axios from "axios";
 import AppHeader from '../_components/AppHeader';
 import { AppSidebar } from '../_components/AppSidebar';
-import { User } from '@supabase/supabase-js'; // ✅ ADD: Import Supabase User type for clarity
+import { User } from '@supabase/supabase-js'; 
 
 function DashboardProvider({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // ✅ FIX: Use the Supabase auth hook
+   
     const { user } = useAuth();
     const router = useRouter();
 
-    // ✅ FIX: This effect now only handles syncing the user to your own DB.
+ 
     // The route protection is now handled by app/(routes)/layout.tsx
     useEffect(() => {
         if (user) {
@@ -25,7 +25,7 @@ function DashboardProvider({
         }
     }, [user]);
 
-    // ✅ FIX: Update function to use Supabase user object structure
+
     const checkUser = async (currentUser: User) => {
         try {
             await axios.post('/api/user', {

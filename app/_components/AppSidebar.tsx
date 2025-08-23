@@ -11,9 +11,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Calendar, CircleDollarSign, Home, Inbox, Paintbrush, Search, Settings } from "lucide-react"
+import { CircleDollarSign, Home, Paintbrush, Settings } from "lucide-react"
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 const items = [
     {
@@ -36,6 +37,7 @@ const items = [
         url: "/settings",
         icon: Settings,
     },
+    
 ]
 
 export function AppSidebar() {
@@ -68,8 +70,9 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+          
             <SidebarFooter>
-                <h2 className='p-2 text-gray-400 text-sm'>Copyright @Tubeguruji</h2>
+              
             </SidebarFooter>
         </Sidebar>
     )

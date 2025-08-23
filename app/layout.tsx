@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Bricolage_Grotesque } from "next/font/google";
 import { AuthContextProvider } from '../context/AuthContext';
+import { Providers } from './providers';
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -25,9 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
         <body className={`${bricolage.variable} antialiased`}>
-          <AuthContextProvider>
+          <Providers>
           {children}
-        </AuthContextProvider>
+        </Providers>
       </body>
     </html>
   );
